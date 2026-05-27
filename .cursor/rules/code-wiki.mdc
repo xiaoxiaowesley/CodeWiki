@@ -1,0 +1,32 @@
+---
+description: CodeWiki skill-based framework for generating and maintaining code knowledge bases. Use these rules whenever engaging with code analysis, wiki generation, querying, or knowledge management.
+globs: "**/*"
+alwaysApply: true
+---
+
+# CodeWiki — Agent Context
+
+This project is an **AI-powered code knowledge base generator** — a skill-based framework that analyzes code repositories and produces structured wiki documentation.
+
+## Quick Orientation
+
+1. Read `.env` for `CODE_WIKI_OUTPUT_PATH` — this is where the generated wiki lives.
+2. Read `.manifest.json` at the wiki output root to see what's already been ingested.
+3. Skills are in `.skills/` (also at `.cursor/skills/`). Each subfolder has a `SKILL.md`.
+
+## When to Use Skills
+
+| User says something like… | Read this skill |
+|---|---|
+| "analyze this repo" / "generate wiki" / "ingest this codebase" | `.skills/code-wiki-ingest/SKILL.md` |
+| "audit" / "lint" / "check wiki health" / "find broken links" | `.skills/code-wiki-lint/SKILL.md` |
+| "what does X do" / "how does Y work" / any question | `.skills/code-wiki-query/SKILL.md` |
+| "rebuild" / "archive" / "start over" / "restore" | `.skills/code-wiki-rebuild/SKILL.md` |
+
+## Key Rules
+
+- **Analyze, don't just list.** The wiki is distilled understanding — architecture, patterns, relationships — not raw code dumps.
+- **Always update `.manifest.json`** after ingesting.
+- **Always update `index.md` and `log.md`** after any operation.
+- **Use `[[wikilinks]]`** to connect related pages.
+- **Frontmatter is required** on every wiki page.

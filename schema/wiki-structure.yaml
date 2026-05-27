@@ -1,0 +1,92 @@
+# CodeWiki — Default Wiki Layer Structure
+# Customize this file to change the wiki directory layout.
+# Each category defines a directory in the wiki output.
+
+version: 1
+
+categories:
+  - name: 01-overview
+    label: Project Overview
+    description: "Big-picture introduction to the project"
+    single_file: true                   # Produce ONE page (overview.md) containing all sections as H2 headings
+    writing_guide: "This category produces a single overview.md file. Open with a narrative introduction explaining what the project is and why it exists. Describe the tech stack with rationale, not just a list. Explain directory structure in terms of responsibilities. All sections below become H2 headings within the same file — do NOT split them across multiple pages."
+    sections:
+      - Background and Purpose          # Prose explaining the problem being solved
+      - Tech Stack Rationale            # Tech choices WITH rationale, not just names
+      - Directory Structure             # Directory tree + prose on each directory's role
+      - Entry Points and Bootstrap Flow # How the application bootstraps, narrative style
+
+  - name: 02-architecture
+    label: Architecture
+    description: "How the code is organized"
+    writing_guide: "Lead with a narrative overview of the system design philosophy. Use Mermaid diagrams for structure visualization. Explain WHY the architecture is shaped this way, not just WHAT it looks like."
+    sections:
+      - System Architecture Diagram     # Narrative intro + mermaid flowchart TD
+      - Layered Structure               # Explain each layer's role and WHY it exists
+      - Core Components                 # Per-component: responsibility + interactions + design rationale
+      - Module Dependency Graph         # Mermaid flowchart + prose explaining key dependency choices
+      - Data Flow and Boundaries        # sequenceDiagram for key data flows
+      - ADRs (Architecture Decision Records) # Decision + context + alternatives considered + outcome
+
+  - name: 03-modules
+    label: Modules
+    description: "What each module does"
+    writing_guide: "Open with what the module does and its role in the system. Describe responsibilities in prose. Explain HOW it works with narrative flow and diagrams, not just interface signatures."
+    sections:
+      - Module Responsibilities         # Prose description, not bullet lists
+      - How It Works                    # Narrative explanation with diagrams
+      - Key Interfaces                  # Public API with purpose of each
+      - Dependencies                    # What it depends on and why
+      - Implementation Notes            # Edge cases, performance, notable details
+
+  - name: 04-flows
+    label: Flows
+    description: "How features actually run"
+    writing_guide: "Start by explaining the business goal of the flow. Walk through steps as a narrative with sequenceDiagrams, not as numbered instructions. Cover error paths."
+    sections:
+      - Core Business Flows             # End-to-end narrative overview
+      - Call Chain Walkthrough          # Step-by-step walkthrough with sequenceDiagram
+      - Data Flow                       # How data transforms through the pipeline
+      - Error Handling                  # Error paths and recovery strategies
+      - Key Step Breakdown              # Source references with inline links
+
+  - name: 05-config
+    label: Configuration
+    description: "How to configure and customize"
+    writing_guide: "Explain what each configuration controls and when you'd change it. Show resolution order (defaults → file → env → CLI). Use tables for dense parameter lists but wrap them in explanatory prose."
+    sections:
+      - Configuration Options           # Each option: purpose, default, allowed values
+      - Resolution Priority             # How config values are resolved
+      - Environment Variables           # Env vars with context on when to use each
+      - Build Configuration             # Build tool config with rationale
+      - Common Scenarios                # Common scenarios with explanations
+
+  - name: 06-testing
+    label: Testing
+    description: "How testing works and coverage status"
+    writing_guide: "Describe the testing philosophy first, then the architecture. Explain what each test suite validates, not just how to run it. Note coverage gaps honestly."
+    sections:
+      - Test Architecture               # How tests are organized and why
+      - Key Test Suites                 # What they validate, frameworks used
+      - Coverage and Gaps               # Current coverage, known gaps, priorities
+
+  - name: 07-ops
+    label: Troubleshooting
+    description: "How to fix things when they break"
+    writing_guide: "Structure as symptom → diagnosis → resolution → prevention. Write for someone who's debugging under pressure — be concrete and actionable."
+    sections:
+      - Common Issues and Symptoms      # How to recognize the issue
+      - Diagnostic Steps                # Step-by-step investigation
+      - Resolution Procedures           # Fix procedures with commands
+      - Prevention                      # How to prevent recurrence
+
+  - name: 08-decisions
+    label: Decision Records
+    description: "Why things were designed this way"
+    writing_guide: "Follow ADR format: context → decision → consequences. Always document alternatives considered and why they were rejected. Mark status clearly."
+    sections:
+      - Decision Status                 # Proposed / Accepted / Deprecated / Superseded
+      - Background                      # What prompted this decision
+      - Decision                        # What was decided and why
+      - Alternatives Considered         # Options evaluated and rejection reasons
+      - Consequences                    # Positive and negative consequences
