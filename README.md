@@ -25,6 +25,79 @@ The default wiki structure is defined in [`schema/wiki-structure.yaml`](schema/w
 | `07-ops/` | Troubleshooting | What to do when things break — errors, debugging, fixes |
 | `08-decisions/` | Decision Records | Why things are the way they are — ADRs, tradeoffs |
 
+## Install
+
+```bash
+npx skills add xiaoxiang/CodeWiki
+```
+
+Or clone manually:
+
+```bash
+git clone https://github.com/xiaoxiang/CodeWiki.git ~/CodeWiki
+cd ~/CodeWiki
+./install.sh
+```
+
+`install.sh` creates `.env`, writes global config to `~/.code-wiki/config`, and symlinks skills into all supported AI agents.
+
+## Usage Guide
+
+Once installed, you can invoke the corresponding skills via slash commands from any code repository. They are introduced below in the order you would typically use them.
+
+### Step 1: Generate the Wiki — `/code-wiki-ingest`
+
+After installation, open your target repository in your AI assistant (Claude Code, Cursor, Windsurf, etc.) and **type the slash command in the assistant's chat**, not in the terminal:
+
+```text
+# In the AI assistant chat window (NOT the shell):
+/code-wiki-ingest
+```
+
+> The terminal is only used to `cd` into your project (or open it in your editor). All `/code-wiki-*` commands are invoked inside the LLM chat — the AI assistant reads the corresponding skill file from `.skills/` and executes it.
+
+This skill performs the following work:
+
+- **Scans the repo structure**: walks the source tree, reads the README, and parses package metadata and git history.
+- **Resolves module boundaries**: identifies module divisions, dependency graph, and entry points.
+- **Extracts architecture, APIs, and design patterns**: distills system layering, interface contracts, and idiomatic patterns from the code.
+- **Generates interconnected documentation pages**: produces markdown pages (with frontmatter) under the eight categories defined in `schema/wiki-structure.yaml` (Project Overview, Architecture, Modules, Flows, Configuration, Testing, Troubleshooting, Decision Records), wired together via `[[wikilinks]]`.
+- **Maintains metadata**: writes `.manifest.json` and updates `index.md` and `log.md`. On subsequent runs it only processes the git delta — no redundant regeneration.
+
+### Day-to-Day Usage: When to Use the Other Skills
+
+#### `/code-wiki-query` — Query information from the Wiki
+
+Use this when you want to know "what does X do", "how does Y work", or "where is Z implemented". It first scans page titles, tags, and the `summary` field in frontmatter (fast-index mode), and only opens page bodies for deeper search when the index pass cannot answer. The final response is a synthesized answer with `[[wikilink]]` citations.
+
+```text
+# In the AI assistant chat:
+/code-wiki-query How is the user login flow implemented?
+```
+
+#### `/code-wiki-lint` — Audit Wiki health
+
+Use this to run a health check on the generated wiki. It looks for the following issues and suggests fixes:
+
+- Broken or stale `[[wikilinks]]`
+- Orphan pages that no other page references
+- Outdated content that has drifted from the source code
+- Missing or non-conforming frontmatter (`title`, `category`, `tags`, `sources`, `created`, `updated`)
+
+```text
+# In the AI assistant chat:
+/code-wiki-lint
+```
+
+#### `/code-wiki-rebuild` — Archive and rebuild the Wiki
+
+Use this when the wiki has drifted too far from the code, when incremental updates can no longer fix it, or when you want to restore a previous snapshot. It supports archiving the current wiki, rebuilding from scratch, and restoring earlier snapshot versions.
+
+```text
+# In the AI assistant chat:
+/code-wiki-rebuild
+```
+
 ## Create Your First Wiki
 
 Setup done. Now open any code repository in your AI assistant (Claude Code, Cursor, Windsurf, Gemini CLI, etc.) and invoke the ingest skill **from inside the assistant's chat** — not from the shell.
